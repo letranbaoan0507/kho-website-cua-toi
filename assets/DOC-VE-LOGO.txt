@@ -1,0 +1,1 @@
+Logo gốc của website được dựng bằng HTML/CSS: chữ webkho và ký hiệu ▱ trong ô xanh. Mã gốc giữ nguyên tại dist/index.html và dist/style.css. Hai SVG ở đây là bản vector tương ứng để dùng riêng, không thay thế hay sửa các tệp website gốc. Hình dáng chữ khi mở SVG phụ thuộc font trên thiết bị. Website dùng Be Vietnam Pro từ Google Fonts, có font hệ thống dự phòng.

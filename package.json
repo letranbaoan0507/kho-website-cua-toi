@@ -1,0 +1,10 @@
+{
+  "name": "kho-website-cua-toi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node local-server.cjs",
+    "build": "node verify-package.cjs",
+    "test": "node tests/core.test.cjs && node tests/app.test.cjs"
+  }
+}
