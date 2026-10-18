@@ -9,7 +9,7 @@ function cloudStore(env=process.env,fetcher=fetch){
  const token=env.UPSTASH_REDIS_REST_TOKEN||env.KV_REST_API_TOKEN;
  if(!endpoint||!token)return null;
  async function command(args){const r=await fetcher(endpoint,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(args),signal:AbortSignal.timeout(12000)});if(!r.ok)throw Error('STORE_UNAVAILABLE');const data=await r.json();if(data.error)throw Error('STORE_UNAVAILABLE');return data.result}
- return {async read(){const value=await command(['GET',KEY]);return value?JSON.parse(value):null},async save(expected,writerHash,row){return command(['EVAL',CAS,1,KEY,String(expected),writerHash,JSON.stringify(row)])}};
+ return {async ping(){return command(['PING'])},async read(){const value=await command(['GET',KEY]);return value?JSON.parse(value):null},async save(expected,writerHash,row){return command(['EVAL',CAS,1,KEY,String(expected),writerHash,JSON.stringify(row)])}};
 }
 function validEnvelope(e){
  if(!e||e.version!==1)return false;
