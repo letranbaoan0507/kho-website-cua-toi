@@ -1,82 +1,50 @@
-# Kho website của tôi — bộ đầy đủ để đăng GitHub/Vercel
+# Kho website của tôi
 
-Bản gốc: https://kho-website-cua-toi.bett-yrobinsonw870.chatgpt.site
-Phiên bản 1, commit nguồn ghi trong PHIEN-BAN.json.
+Lưu, tìm kiếm và sắp xếp link website; giữ giao diện và các chức năng quản lý kho hiện có. Có hai cách bảo vệ: dùng mật khẩu hoặc không mật khẩu.
 
-Bốn tệp trong `dist/` giữ nguyên từng byte so với gói website đang chạy. Không thay giao diện, logo hay chức năng. Các tệp bổ sung ở ngoài `dist/` chỉ dùng để triển khai, chạy trên máy, đối chiếu và hướng dẫn.
+## Đồng bộ giữa các thiết bị
 
-## Có đầy đủ
+Ứng dụng dùng `/api/vault` trên Vercel và một cơ sở dữ liệu Redis có REST API. Không lưu dữ liệu dùng chung vào ổ tạm của Vercel hoặc repository GitHub.
 
-- Dán link, thêm/sửa/xóa website; thùng rác, khôi phục, xóa vĩnh viễn.
-- Tìm kiếm tiếng Việt không dấu, nhóm/bộ sưu tập, thẻ, ghi chú, trạng thái, yêu thích, vừa mở.
-- Giao diện lưới/danh sách; mở link website hoặc link mã nguồn/quản trị; sao chép link.
-- Dán nhiều link, bỏ qua link trùng; không đặt hạn mức số link hay số lần thêm.
-- Người dùng tự đặt/đổi mật khẩu, khóa thủ công và tự khóa khi không thao tác.
-- Mã hóa kho trên trình duyệt; xuất và nhập/gộp bản sao JSON mã hóa.
-- Logo webkho đúng mã gốc trong giao diện. Kèm file vector riêng ở `assets/logo-webkho.svg` và `assets/logo-icon.svg`.
+Cần kết nối cơ sở dữ liệu vào đúng dự án Vercel và cấp hai biến môi trường phía máy chủ:
 
-## Đăng GitHub + Vercel, chọn phương án miễn phí
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN` (token đọc/ghi, không phải readonly)
 
-1. Giải nén ZIP và mở thư mục `Kho-website-cua-toi` bên trong.
-2. Tạo repository trong tài khoản GitHub cá nhân, dùng GitHub Free. Có thể chọn Public cho cách đơn giản nhất.
-3. Đưa TOÀN BỘ NỘI DUNG thư mục này lên repository: `vercel.json`, `package.json`, `dist/` nằm ngay cấp gốc, không lồng thêm một thư mục `Kho-website-cua-toi`.
-4. Đăng nhập Vercel bằng GitHub, chọn gói Hobby, Add New > Project rồi Import repository vừa tạo.
-5. Cấu hình có sẵn trong `vercel.json`. Nếu cần kiểm tra: Framework Preset = Other; Root Directory = gốc repository; Build Command = `node verify-package.cjs`; Output Directory = `dist`; Install Command trống; không cần nhập Environment Variables.
-6. Bấm Deploy. Dùng tên miền `vercel.app` được cấp, không cần mua tên miền riêng.
+Hỗ trợ các tên tương đương `KV_REST_API_URL` và `KV_REST_API_TOKEN`. Sau khi thêm biến cho môi trường Production, triển khai lại dự án. Không đưa token vào JavaScript trình duyệt, GitHub hoặc file sao lưu. Chọn cấu hình cơ sở dữ liệu lưu bền vững và không tự xóa dữ liệu khi đầy. Nhà cung cấp lưu trữ có hạn mức và chính sách riêng.
 
-Vercel Hobby miễn phí cho dự án cá nhân, phi thương mại và có hạn mức tài nguyên. Không chọn nâng cấp Pro, Pro trial, dịch vụ bổ sung hoặc tên miền trả phí nếu muốn giữ phương án miễn phí. Bộ website này không cần database cloud, API key hay gói npm trả phí.
+Khi chưa cấu hình, API trả `SYNC_NOT_CONFIGURED`; website ghi rõ chỉ lưu trên thiết bị và tiếp tục giữ dữ liệu cũ. Việc tải mã nguồn lên GitHub hoặc triển khai giao diện không tự tạo cơ sở dữ liệu.
 
-Nguồn chính thức:
-https://vercel.com/docs/plans/hobby
-https://vercel.com/docs/project-configuration/vercel-json
+Khi đã cấu hình:
 
-## Phương án khác: GitHub Pages miễn phí
+1. Mở đúng địa chỉ kho bằng trình duyệt đã lưu website cũ và mở khóa bằng mật khẩu hiện tại. Kho cũ sẽ được đưa lên máy chủ; bản gốc trên thiết bị được giữ riêng.
+2. Mở cùng địa chỉ trên thiết bị khác. Kho có mật khẩu dùng cùng mật khẩu; kho không mật khẩu mở trực tiếp.
+3. Nếu trước đó mỗi thiết bị có dữ liệu riêng, mở Cài đặt > Nhập website cũ trên thiết bị này để gộp. Link trùng giữ nguyên mục trên kho chung.
 
-GitHub Pages hỗ trợ repository công khai trên GitHub Free.
+Danh sách kiểm tra thay đổi mỗi 15 giây và khi quay lại tab. Lưu sử dụng phiên bản và thao tác so sánh/cập nhật nguyên tử để không ghi đè thay đổi từ thiết bị khác. Khi có xung đột, lấy bản mới rồi thực hiện lại thao tác. Kho tối đa khoảng 3 MiB cho một lần đồng bộ, ngoài hạn mức nhà cung cấp; lỗi lưu luôn giữ dữ liệu đang mở.
 
-1. Đưa toàn bộ mã nguồn lên repository Public, nhánh `main`.
-2. Vào Settings > Pages > Build and deployment > Source, chọn GitHub Actions.
-3. Đảm bảo có `.github/workflows/pages.yml` đi kèm. Nếu tải bằng giao diện web bị thiếu thư mục này, tạo đúng đường dẫn bằng Add file > Create new file rồi dán nội dung tệp đi kèm.
-4. Vào Actions > Deploy Kho website to GitHub Pages > Run workflow, hoặc đẩy một commit lên `main`.
-5. Chờ chạy xong rồi lấy link trong Settings > Pages.
+## Mật khẩu và không mật khẩu
 
-Nguồn: https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages
+Ở bước tạo kho, chọn Dùng mật khẩu hoặc Không mật khẩu. Đổi sau này tại Cài đặt > Mật khẩu / Không mật khẩu; bỏ/đổi mật khẩu của kho đang bảo vệ phải nhập đúng mật khẩu hiện tại.
 
-## Mở trên máy
+Kho có mật khẩu được mã hóa AES-GCM trên trình duyệt trước khi gửi, dùng PBKDF2-SHA256. Mật khẩu không được lưu trên máy chủ. Quyền ghi được bảo vệ bằng khóa ngẫu nhiên nằm trong dữ liệu mã hóa; đổi chế độ/mật khẩu sẽ đổi khóa ghi. Không có chức năng lấy lại mật khẩu đã quên.
 
-Cài Node.js LTS miễn phí từ https://nodejs.org rồi chạy `CHAY-WINDOWS.bat`.
-Hoặc mở terminal trong thư mục này:
+Kho không mật khẩu lưu danh sách đọc trực tiếp, không tự khóa: ai có địa chỉ website đều có thể xem và sửa kho. Bật lại mật khẩu để mã hóa những lần lưu tiếp theo; các bản sao đã tải trước đó vẫn giữ trạng thái cũ.
 
-```text
+Xuất/nhập JSON hỗ trợ cả hai chế độ và bản sao mã hóa cũ. File sao lưu có mật khẩu dùng mật khẩu tại thời điểm xuất.
+
+## Chạy và kiểm tra
+
+Không cần cài gói npm:
+
+```sh
+npm test
+npm run build
 npm start
 ```
 
-Mở http://localhost:8080. Giữ cửa sổ máy chủ đang chạy; Ctrl+C để dừng. Không cần `npm install` vì không có gói npm phải cài. Không mở `dist/index.html` trực tiếp bằng file://; phần mã hóa cần HTTPS hoặc localhost.
+Mở `http://localhost:8080`. Muốn thử đồng bộ tại máy, cấp biến môi trường REST trước khi chạy. GitHub Pages chỉ hỗ trợ chế độ trên thiết bị vì không chạy `/api/vault`; dùng Vercel để đồng bộ.
 
-## Mang dữ liệu từ website cũ sang link mới
+Kiểm tra tự động gồm mã hóa thực, chuyển mật khẩu/không mật khẩu, di chuyển dữ liệu cũ, hai thiết bị giả lập cùng kho, chống ghi đè và thu hồi khóa ghi. Chưa kiểm tra trực tiếp trình duyệt hoặc cơ sở dữ liệu Production chưa được kết nối.
 
-ZIP chứa mã nguồn, không tự chứa danh sách website hoặc mật khẩu đang nằm trong trình duyệt của bạn.
-
-1. Ở website cũ, mở khóa kho > Cài đặt & sao lưu > Xuất bản sao mã hóa.
-2. Giữ file JSON và ghi nhớ mật khẩu dùng lúc xuất.
-3. Ở link mới chưa có kho, chọn Đã có bản sao? Khôi phục kho rồi nhập JSON/mật khẩu đó.
-4. Nếu link mới đã có kho, mở khóa rồi Cài đặt & sao lưu > Nhập bản sao. Link mới sẽ được gộp vào kho hiện tại; link trùng không ghi đè.
-
-Dữ liệu chỉ lưu trong trình duyệt, gắn với tên miền; không tự đồng bộ giữa thiết bị. Không đẩy file sao lưu riêng tư lên GitHub. Khi quên mật khẩu, không có chức năng khôi phục mật khẩu. Sau khi đổi mật khẩu, các file sao lưu cũ vẫn dùng mật khẩu cũ.
-
-## Kiểm tra khớp bản gốc
-
-```text
-node verify-package.cjs
-npm test
-```
-
-`dist.sha256.json` chứa dấu kiểm tra của bốn tệp website gốc. Lệnh kiểm tra đối chiếu từng byte bằng SHA-256. Nếu bạn chủ động sửa website sau này, cập nhật dấu kiểm tra hoặc bỏ lệnh kiểm tra khỏi Build Command; bộ mã nguồn không bị khóa chỉnh sửa.
-
-`tests/` chứa kiểm tra mã hóa thực tế và luồng ứng dụng với mô phỏng DOM/IndexedDB. Chưa kiểm thử trực tiếp giao diện trong trình duyệt hoặc triển khai vào tài khoản Vercel/GitHub của bạn.
-
-## Lưu ý về chi phí và dung lượng
-
-Website không đặt hạn mức số lần thêm. Dung lượng thực tế phụ thuộc thiết bị/trình duyệt; không có cam kết lưu trữ vô hạn. Kho có thể bị mất nếu xóa dữ liệu trình duyệt, nên xuất bản sao định kỳ. Google Fonts được gọi như bản đang chạy; nếu không tải được thì dùng font hệ thống.
-
-Không có token, mật khẩu tài khoản hay lịch sử Git trong ZIP. `.openai/hosting.json` chỉ giữ thông tin Sites gốc; GitHub Pages và Vercel không dùng tệp này. Chi tiết kỹ thuật gốc nằm trong `TAI-LIEU-KY-THUAT.md`.
+Tài liệu giao thức Redis REST: https://upstash.com/docs/redis/features/restapi

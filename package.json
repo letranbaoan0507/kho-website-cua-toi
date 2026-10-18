@@ -5,6 +5,6 @@
   "scripts": {
     "start": "node local-server.cjs",
     "build": "node verify-package.cjs",
-    "test": "node tests/core.test.cjs && node tests/app.test.cjs"
+    "test": "node tests/core.test.cjs && node tests/app.test.cjs && node tests/sync.test.cjs"
   }
 }
